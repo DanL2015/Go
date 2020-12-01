@@ -109,7 +109,7 @@ void drawPieces()
 void updateBlack() //for some reason, always erasing a black (fixed)
 {
 	//floodfill all back locations
-	//check if there is any Æø around it (count total)
+	//check if there is any Ã†Ã¸ around it (count total)
 	//if none, black is fully surrounded - erase
 	int dx[4] = { 0, 1, -1, 0 };
 	int dy[4] = { 1, 0, 0, -1 };
@@ -153,15 +153,6 @@ void updateBlack() //for some reason, always erasing a black (fixed)
 			}
 		}
 	}
-	for (int i = 0; i < 19; i++)
-	{
-		for (int j = 0; j < 19; j++)
-		{
-			cout << cboard[i][j] << " ";
-		}
-		cout << endl;
-	}
-	cout << endl;
 	vector <int> qi;
 	qi.assign(num, 0);
 	for (int i = 0; i < 19; i++)
@@ -185,11 +176,6 @@ void updateBlack() //for some reason, always erasing a black (fixed)
 			}
 		}
 	}
-	for (int i = 1; i < qi.size(); i++)
-	{
-		cout << qi[i] << endl;
-	}
-	cout << endl;
 	set<int> nerase;
 	for (int i = 1; i < qi.size(); i++)
 	{
@@ -256,15 +242,6 @@ void updateWhite()
 			}
 		}
 	}
-	for (int i = 0; i < 19; i++)
-	{
-		for (int j = 0; j < 19; j++)
-		{
-			cout << cboard[i][j] << " ";
-		}
-		cout << endl;
-	}
-	cout << endl;
 	vector <int> qi;
 	qi.assign(num, 0);
 	for (int i = 0; i < 19; i++)
@@ -288,11 +265,6 @@ void updateWhite()
 			}
 		}
 	}
-	for (int i = 1; i < qi.size(); i++)
-	{
-		cout << qi[i] << endl;
-	}
-	cout << endl;
 	set<int> nerase;
 	for (int i = 1; i < qi.size(); i++)
 	{
