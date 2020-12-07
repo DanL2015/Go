@@ -24,6 +24,7 @@ int i1x = -1;
 int i1y = -1;
 int i2x = -1;
 int i2y = -1;
+bool clickRelease = false;
 
 void initialize()
 {
@@ -190,7 +191,6 @@ void updateBlack() //for some reason, always erasing a black (fixed)
 		{
 			if (nerase.find(cboard[i][j]) != nerase.end() && cboard[i][j]!=0)
 			{
-				cout << "erased" << endl;
 				board[i][j] = 0;
 			}
 		}
@@ -279,7 +279,6 @@ void updateWhite()
 		{
 			if (nerase.find(cboard[i][j]) != nerase.end() && cboard[i][j] != 0)
 			{
-				cout << "erased" << endl;
 				board[i][j] = 0;
 			}
 		}
@@ -296,53 +295,64 @@ int main()
 		{
 			if (evnt.type == Event::Closed)
 				window.close();
-		}
-		//input
-		if (Mouse::isButtonPressed(Mouse::Left))
-		{
-			if (m1x == -1 || m1y == -1)
+			if (evnt.type == Event::MouseButtonPressed)
 			{
-				m1x = Mouse::getPosition(window).x;
-				m1y = Mouse::getPosition(window).y;
-				i1x = (m1x) / 45;
-				i1y = (m1y) / 45;
-			}
-			else if (m2x == -1 || m2y == -1) //basically need to double click to place
-			{
-				m2x = Mouse::getPosition(window).x;
-				m2y = Mouse::getPosition(window).y;
-				i2x = (m2x) / 45;
-				i2y = (m2y) / 45;
-				if (i1x == i2x && i1y == i2y && board[i1x][i1y] == 0)
+				if (evnt.mouseButton.button == Mouse::Left)
 				{
-					//want to place piece at i1x, i1y
-					board[i1x][i1y] = turn;
-					turn = turn % 2 + 1;
-					//update the board to check for any cutoffs
-					updateBlack();
-					updateWhite();
+					if (m1x == -1 || m1y == -1)
+					{
+						m1x = Mouse::getPosition(window).x;
+						m1y = Mouse::getPosition(window).y;
+						i1x = (m1x) / 45;
+						i1y = (m1y) / 45;
+						clickRelease = false;
+					}
+					else if ((m2x == -1 || m2y == -1) && clickRelease == true) //basically need to double click to place
+					{
+						clickRelease = false;
+						m2x = Mouse::getPosition(window).x;
+						m2y = Mouse::getPosition(window).y;
+						i2x = (m2x) / 45;
+						i2y = (m2y) / 45;
+						if (i1x == i2x && i1y == i2y && board[i1x][i1y] == 0)
+						{
+							//want to place piece at i1x, i1y
+							board[i1x][i1y] = turn;
+							turn = turn % 2 + 1;
+							//update the board to check for any cutoffs
+							updateBlack();
+							updateWhite();
+						}
+						m1x = -1;
+						m1y = -1;
+						m2x = -1;
+						m2y = -1;
+						i1x = -1;
+						i1y = -1;
+						i2x = -1;
+						i2y = -1;
+					}
 				}
-				m1x = -1;
-				m1y = -1;
-				m2x = -1;
-				m2y = -1;
-				i1x = -1;
-				i1y = -1;
-				i2x = -1;
-				i2y = -1;
+				if (evnt.mouseButton.button == Mouse::Right)
+				{
+					m1x = -1;
+					m1y = -1;
+					m2x = -1;
+					m2y = -1;
+					i1x = -1;
+					i1y = -1;
+					i2x = -1;
+					i2y = -1;
+					clickRelease = false;
+				}
 			}
-		}
-
-		if (Mouse::isButtonPressed(Mouse::Right))
-		{
-			m1x = -1;
-			m1y = -1;
-			m2x = -1;
-			m2y = -1;
-			i1x = -1;
-			i1y = -1;
-			i2x = -1;
-			i2y = -1;
+			if (evnt.type == Event::MouseButtonReleased)
+			{
+				if (evnt.mouseButton.button == Mouse::Left)
+				{
+					clickRelease = true;
+				}
+			}
 		}
 
 		//display
